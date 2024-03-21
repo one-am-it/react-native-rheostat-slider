@@ -1170,6 +1170,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/plugin-transform-object-assign@npm:^7.16.7":
+  version: 7.24.1
+  resolution: "@babel/plugin-transform-object-assign@npm:7.24.1"
+  dependencies:
+    "@babel/helper-plugin-utils": ^7.24.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 88f56168f621501dc1aa796d569c76042367c2c3cb2c24f1419ed0783055a393f5722216a87abd9793365a0bd29b42a4e8055e93432c4b3657e6b5a22fe61c6f
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-transform-object-rest-spread@npm:^7.12.13, @babel/plugin-transform-object-rest-spread@npm:^7.24.1":
   version: 7.24.1
   resolution: "@babel/plugin-transform-object-rest-spread@npm:7.24.1"
@@ -1927,6 +1938,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@egjs/hammerjs@npm:^2.0.17":
+  version: 2.0.17
+  resolution: "@egjs/hammerjs@npm:2.0.17"
+  dependencies:
+    "@types/hammerjs": ^2.0.36
+  checksum: 8945137cec5837edd70af3f2e0ea621543eb0aa3b667e6269ec6485350f4d120c2434b37c7c30b1cf42a65275dd61c1f24626749c616696d3956ac0c008c4766
+  languageName: node
+  linkType: hard
+
 "@eslint-community/eslint-utils@npm:^4.2.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
@@ -2379,9 +2399,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/webpack-config@npm:^18.0.1":
-  version: 18.1.4
-  resolution: "@expo/webpack-config@npm:18.1.4"
+"@expo/webpack-config@npm:~19.0.1":
+  version: 19.0.1
+  resolution: "@expo/webpack-config@npm:19.0.1"
   dependencies:
     "@babel/core": ^7.20.2
     babel-loader: ^8.3.0
@@ -2390,15 +2410,16 @@ __metadata:
     copy-webpack-plugin: ^10.2.0
     css-loader: ^6.5.1
     css-minimizer-webpack-plugin: ^3.4.1
-    expo-pwa: 0.0.126
+    expo-pwa: 0.0.127
     find-up: ^5.0.0
     find-yarn-workspace-root: ~2.0.0
+    fs-extra: ^11.2.0
     getenv: ^1.0.0
     html-webpack-plugin: ^5.5.0
     is-wsl: ^2.0.0
     mini-css-extract-plugin: ^2.5.2
     node-html-parser: ^5.2.0
-    semver: ~7.3.2
+    semver: ~7.5.4
     source-map-loader: ^3.0.1
     style-loader: ^3.3.1
     terser-webpack-plugin: ^5.3.0
@@ -2406,8 +2427,8 @@ __metadata:
     webpack-dev-server: ^4.11.1
     webpack-manifest-plugin: ^4.1.1
   peerDependencies:
-    expo: ^48.0.17
-  checksum: c37b5aacf92f9fb9ba0ce47aff5708ca2d803cf32e492e638b89c002a052ba3064f694aa0104df5ce9c887d3222551ba997ab2e2c74e286ede865b4649b8367e
+    expo: ^49.0.7 || ^50.0.0-0
+  checksum: 20f3ed83eccfa9d8de9c08f559685ec0125b537bc465b86927635db47ece4cec109442e8aa734402101de0f631110eb706e4611db8af2d583c64ad2293ec3ecf
   languageName: node
   linkType: hard
 
@@ -3538,6 +3559,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@shopify/react-native-skia@npm:0.1.221":
+  version: 0.1.221
+  resolution: "@shopify/react-native-skia@npm:0.1.221"
+  dependencies:
+    canvaskit-wasm: 0.39.1
+    react-reconciler: ^0.27.0
+  peerDependencies:
+    react: ">=18.0"
+    react-native: ">=0.64"
+    react-native-reanimated: ">=2.0.0"
+  peerDependenciesMeta:
+    react-native:
+      optional: true
+    react-native-reanimated:
+      optional: true
+  bin:
+    setup-skia-web: scripts/setup-canvaskit.js
+  checksum: 7ceb299306aa0bc5f48f0570e89a728c296b8b259cd7d00f1d5dd26db1fa25daf4e12cb64b8b83b48d54063858fabf6d0512b237a4d2f0faf389861b55ce0173
+  languageName: node
+  linkType: hard
+
 "@shopify/react-native-skia@npm:^1.0.4":
   version: 1.0.4
   resolution: "@shopify/react-native-skia@npm:1.0.4"
@@ -3804,6 +3846,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 79d746a8f053954bba36bd3d94a90c78de995d126289d656fb3271dd9f1229d33f678da04d10bce6be440494a5a73438e2e363e92802d16b8315b051036c5256
+  languageName: node
+  linkType: hard
+
+"@types/hammerjs@npm:^2.0.36":
+  version: 2.0.45
+  resolution: "@types/hammerjs@npm:2.0.45"
+  checksum: 40a29067c485a2a1f4345718104218fcf769adb1dbe091cdb6f679b3293dfa0798b207eb498ee7fd79ae8664c999117738fa0c01753f7465a639128f38c3ff5b
   languageName: node
   linkType: hard
 
@@ -8340,9 +8389,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-pwa@npm:0.0.126":
-  version: 0.0.126
-  resolution: "expo-pwa@npm:0.0.126"
+"expo-pwa@npm:0.0.127":
+  version: 0.0.127
+  resolution: "expo-pwa@npm:0.0.127"
   dependencies:
     "@expo/image-utils": 0.3.23
     chalk: ^4.0.0
@@ -8352,7 +8401,7 @@ __metadata:
     expo: "*"
   bin:
     expo-pwa: build/cli.js
-  checksum: 6a0de8082649913ce23e1015c786bd68218ce5e5ce58dc99d808a820055907a5ab871574fc50b3b802b3d1933749c76971be92145f4a8a178f440b693868b83c
+  checksum: d9fd7bd6d875342caf7eb4a0b893928301b507a4d26830722c56f96e2a973be852bc8ec77a277dde8bc166e95b7c09c58e3014fb8849ba125289f55bd01e39f8
   languageName: node
   linkType: hard
 
@@ -9560,6 +9609,15 @@ __metadata:
   dependencies:
     source-map: ^0.7.3
   checksum: b5f874eaa65b70d88df7a4ce3b20d73312bb0bc73410f1b63d708f02e1c532ae16975da84e23b977eab8592ac95d7e6fc0c4094c78604fd0a092ed886c62aa7a
+  languageName: node
+  linkType: hard
+
+"hoist-non-react-statics@npm:^3.3.0":
+  version: 3.3.2
+  resolution: "hoist-non-react-statics@npm:3.3.2"
+  dependencies:
+    react-is: ^16.7.0
+  checksum: b1538270429b13901ee586aa44f4cc3ecd8831c061d06cb8322e50ea17b3f5ce4d0e2e66394761e6c8e152cd8c34fb3b4b690116c6ce2bd45b18c746516cb9e8
   languageName: node
   linkType: hard
 
@@ -13243,13 +13301,16 @@ __metadata:
   resolution: "oneam-react-native-rheostat-example@workspace:example"
   dependencies:
     "@babel/core": ^7.20.0
-    "@expo/webpack-config": ^18.0.1
+    "@expo/webpack-config": ~19.0.1
+    "@shopify/react-native-skia": 0.1.221
     babel-loader: ^8.1.0
     babel-plugin-module-resolver: ^5.0.0
     expo: ~50.0.13
     expo-status-bar: ~1.11.1
     react: 18.2.0
     react-native: 0.73.5
+    react-native-gesture-handler: ~2.14.0
+    react-native-reanimated: ~3.6.2
   languageName: unknown
   linkType: soft
 
@@ -13278,12 +13339,16 @@ __metadata:
     react: 18.2.0
     react-native: 0.73.5
     react-native-builder-bob: ^0.20.0
+    react-native-gesture-handler: ^2.15.0
     react-native-reanimated: ^3.8.1
     release-it: ^15.0.0
     typescript: ^5.2.2
   peerDependencies:
-    react: "*"
-    react-native: "*"
+    "@shopify/react-native-skia": ">=0.1.233"
+    react: ">=18"
+    react-native: ">=0.69"
+    react-native-gesture-handler: ">=2"
+    react-native-reanimated: ">=3.1.0"
   languageName: unknown
   linkType: soft
 
@@ -14460,7 +14525,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
+"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -14665,7 +14730,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.13.1":
+"react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
@@ -14712,6 +14777,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-gesture-handler@npm:^2.15.0":
+  version: 2.15.0
+  resolution: "react-native-gesture-handler@npm:2.15.0"
+  dependencies:
+    "@egjs/hammerjs": ^2.0.17
+    hoist-non-react-statics: ^3.3.0
+    invariant: ^2.2.4
+    lodash: ^4.17.21
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 4db52e7b38b047bad677ed570a0ef4c2ddfc413bbbce5ed21f487c9d86c60588ee6b2c9f74bb842e5654284b0d1e6a8af81f68000e737d8a7f1e030b6d3fe6b6
+  languageName: node
+  linkType: hard
+
+"react-native-gesture-handler@npm:~2.14.0":
+  version: 2.14.1
+  resolution: "react-native-gesture-handler@npm:2.14.1"
+  dependencies:
+    "@egjs/hammerjs": ^2.0.17
+    hoist-non-react-statics: ^3.3.0
+    invariant: ^2.2.4
+    lodash: ^4.17.21
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: a037e8c5a88a9fc79c283f3064d7653ec8615cb05fc62622eaccb5f3db489ede9c3a0685b7aad210c7efabfd8f5aa34e4f19204318dfda64c8829266d78e0cae
+  languageName: node
+  linkType: hard
+
 "react-native-reanimated@npm:^3.8.1":
   version: 3.8.1
   resolution: "react-native-reanimated@npm:3.8.1"
@@ -14729,6 +14826,27 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 078a1e32ce1ca11488862db90663fd5cacb61aea65dc540c90cd5346d97e63cc6836f25cfc48b7acefd301fda414f05329a92ae5cb28fb83b94c571e66f147e3
+  languageName: node
+  linkType: hard
+
+"react-native-reanimated@npm:~3.6.2":
+  version: 3.6.3
+  resolution: "react-native-reanimated@npm:3.6.3"
+  dependencies:
+    "@babel/plugin-transform-object-assign": ^7.16.7
+    "@babel/preset-typescript": ^7.16.7
+    convert-source-map: ^2.0.0
+    invariant: ^2.2.4
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+    "@babel/plugin-proposal-nullish-coalescing-operator": ^7.0.0-0
+    "@babel/plugin-proposal-optional-chaining": ^7.0.0-0
+    "@babel/plugin-transform-arrow-functions": ^7.0.0-0
+    "@babel/plugin-transform-shorthand-properties": ^7.0.0-0
+    "@babel/plugin-transform-template-literals": ^7.0.0-0
+    react: "*"
+    react-native: "*"
+  checksum: 5094beff09bbeaa13101aca9dfb7be7749ccdea72f240751a2a3f23a354cfc6fdf701549fa6c5dff32d03dc1ed4e404a29db3729519c7098d94ae6c8821a32bd
   languageName: node
   linkType: hard
 
@@ -14782,7 +14900,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-reconciler@npm:0.27.0":
+"react-reconciler@npm:0.27.0, react-reconciler@npm:^0.27.0":
   version: 0.27.0
   resolution: "react-reconciler@npm:0.27.0"
   dependencies:
@@ -15625,7 +15743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.3.8, semver@npm:~7.3.2":
+"semver@npm:7.3.8":
   version: 7.3.8
   resolution: "semver@npm:7.3.8"
   dependencies:
@@ -15658,7 +15776,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.5.4":
+"semver@npm:7.5.4, semver@npm:~7.5.4":
   version: 7.5.4
   resolution: "semver@npm:7.5.4"
   dependencies:

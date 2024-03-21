@@ -74,6 +74,7 @@
     "react": "18.2.0",
     "react-native": "0.73.5",
     "react-native-builder-bob": "^0.20.0",
+    "react-native-gesture-handler": "^2.15.0",
     "react-native-reanimated": "^3.8.1",
     "release-it": "^15.0.0",
     "typescript": "^5.2.2"
@@ -82,8 +83,11 @@
     "@types/react": "^18.2.44"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "@shopify/react-native-skia": ">=0.1.233",
+    "react": ">=18",
+    "react-native": ">=0.69",
+    "react-native-gesture-handler": ">=2",
+    "react-native-reanimated": ">=3.1.0"
   },
   "workspaces": [
     "example"
