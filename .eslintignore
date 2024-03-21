@@ -1,0 +1,9 @@
+node_modules/
+babel.config.js
+example/babel.config.js
+example/metro.config.js
+example/webpack.config.js
+example/android/
+example/ios/
+
+
