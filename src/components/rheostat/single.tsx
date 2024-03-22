@@ -1,46 +1,69 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+
+import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated';
+
 import type { BaseRheostatProps } from './types';
 import { Dot } from '../dot';
-
-const STEP_SIZE = 30;
+import { usePanGesture } from '../hooks/usePanGesture';
+import { getPosition, getValue } from './utils';
+import { DOT_DEFAULT_COLOR, DOT_DEFAULT_SIZE } from './constant';
 
 function SingleRheostat({
+  enabled = true,
   width,
-  height,
   values: inputValues,
+  data,
+  onValuesUpdated,
   ...props
 }: BaseRheostatProps) {
-  const axisWidth = useMemo(() => width - STEP_SIZE, [width]);
+  const axisWidth = useMemo(() => width - DOT_DEFAULT_SIZE, [width]);
 
-  const xTranslation = useSharedValue(0);
-  // const currentSnapValue = useDerivedValue(() => {
-  //   if (width === 0) return 0;
-  //
-  //   const v = (xTranslation.value * inputValues.length) / axisWidth;
-  //   return Math.round(v);
-  // });
+  const dotValuePosition = useSharedValue(
+    getPosition(inputValues[0] as number, data, axisWidth)
+  );
 
-  const pan = Gesture.Pan().onChange((event) => {
-    if (event.absoluteX <= axisWidth) xTranslation.value = event.absoluteX;
+  const dataValue = useDerivedValue(() => {
+    return getValue(dotValuePosition.value, data, axisWidth);
+  });
+  const activeDataValues = useDerivedValue(() => {
+    return data.filter((d) => d <= dataValue.value);
+  });
+
+  const { gesture } = usePanGesture({ enabled });
+  gesture.onChange((event) => {
+    if (event.absoluteX <= axisWidth) {
+      if (onValuesUpdated) {
+        onValuesUpdated({
+          activeValues: activeDataValues.value,
+          max: Math.max(...activeDataValues.value),
+          min: Math.min(...activeDataValues.value),
+        });
+      }
+      dotValuePosition.value = event.absoluteX;
+    }
   });
 
   const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateX: xTranslation.value }],
+    transform: [{ translateX: dotValuePosition.value }],
   }));
   const sliderWidth = useAnimatedStyle(() => ({
-    width: xTranslation.value,
+    width: dotValuePosition.value,
   }));
 
   return (
     <>
-      <GestureDetector gesture={pan}>
-        <Dot color={props.theme?.dot} style={animatedStyles} />
+      <GestureDetector gesture={gesture}>
+        <Dot
+          color={props.theme?.dot ?? DOT_DEFAULT_COLOR}
+          size={DOT_DEFAULT_SIZE}
+          style={animatedStyles}
+        />
       </GestureDetector>
       <Animated.View
         style={[
@@ -66,7 +89,7 @@ export default SingleRheostat;
 const styles = StyleSheet.create({
   slider: {
     position: 'absolute',
-    top: STEP_SIZE / 2,
+    top: DOT_DEFAULT_SIZE / 2,
   },
   active: {
     height: 4,

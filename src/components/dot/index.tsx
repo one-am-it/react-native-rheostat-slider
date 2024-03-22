@@ -1,22 +1,9 @@
 import Animated from 'react-native-reanimated';
 import React, { useMemo } from 'react';
-import { type StyleProp, StyleSheet, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
+import type { DotProps } from './types';
 
-const DOT_DEFAULT_SIZE = 30;
-const DOT_DEFAULT_COLOR = 'violet';
-
-interface DotProps {
-  color?: string;
-  size?: number;
-  isActive?: boolean;
-  style?: StyleProp<ViewStyle>;
-}
-
-export function Dot({
-  color = DOT_DEFAULT_COLOR,
-  size = DOT_DEFAULT_SIZE,
-  style,
-}: DotProps) {
+export function Dot({ color, size, style }: DotProps) {
   const styles = useMemo(() => makeStyle(color, size), [color, size]);
 
   return <Animated.View style={[styles.circle, style]} />;

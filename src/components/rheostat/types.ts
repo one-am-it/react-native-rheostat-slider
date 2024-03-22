@@ -15,11 +15,26 @@ export interface Layout {
   height: number;
 }
 
-export interface RheostatProps {
+export type HandlersState = {
   min?: number;
   max?: number;
+  activeValues: number[];
+};
+
+export interface RheostatProps {
+  enabled?: boolean;
   style?: StyleProp<ViewStyle>;
+  /**
+   * @description
+   * current slider values.
+   * La proprietà definisce i valori iniziali dei DOT
+   */
   values: number[];
+  /**
+   * @description
+   * valori da mappare sullo slider
+   */
+  data: number[];
   /**
    * @description
    * Personalizzazione componenti
@@ -31,4 +46,5 @@ export interface RheostatProps {
       inactive?: string;
     };
   };
+  onValuesUpdated?: (state:HandlersState) => void,
 }
