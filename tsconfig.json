@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "oneam-react-native-rheostat": ["./src/index"]
+      "@oneam/react-native-rheostat-slider": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "OneAM React Native Rheostat Example",
-    "slug": "oneam-react-native-rheostat-example",
+    "slug": "oneam-react-native-rheostat-slider-example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.marcolanfranchi.example"

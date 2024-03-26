@@ -1,7 +1,7 @@
 {
-  "name": "oneam-react-native-rheostat",
+  "name": "@oneam/react-native-rheostat-slider",
   "version": "0.1.0",
-  "description": "OneAM React Native Rheostat",
+  "description": "OneAM React Native Rheostat slider",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",
@@ -26,7 +26,7 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace oneam-react-native-rheostat-example",
+    "example": "yarn workspace @oneam/react-native-rheostat-slider-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
@@ -41,14 +41,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/one-am-it/oneam-react-native-rheostat.git"
+    "url": "git+https://github.com/one-am-it/react-native-rheostat-slider.git"
   },
-  "author": "OneAM <marco.lanfranchi@oneam.it> (https://github.com/one-am-it)",
+  "author": "one-am <info@oneam.it> (https://github.com/one-am-it)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/one-am-it/oneam-react-native-rheostat/issues"
+    "url": "https://github.com/one-am-it/react-native-rheostat-slider/issues"
   },
-  "homepage": "https://github.com/one-am-it/oneam-react-native-rheostat#readme",
+  "homepage": "https://github.com/one-am-it/react-native-rheostat-slider#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
