@@ -12,9 +12,9 @@ export default function App() {
       <View style={styles.canvas}>
         <Rheostat
           double={true}
-          values={[22, 22]}
+          values={[12, 22]}
           data={mockValues}
-          style={{ paddingHorizontal: 20 }}
+          horizontalPadding={20}
           theme={{
             dot: '#6388f0',
             slider: { inactive: '#bec3c0', active: '#6388f0' },
@@ -35,5 +35,6 @@ const styles = StyleSheet.create({
   canvas: {
     width: '100%',
     height: 100,
+    padding: 15,
   },
 });

@@ -2,11 +2,11 @@ import { type SharedValue, useSharedValue } from 'react-native-reanimated';
 import { Gesture, type PanGesture } from 'react-native-gesture-handler';
 import { useMemo } from 'react';
 
-interface Config {
+export interface Config {
   enabled: boolean;
 }
 
-interface Result {
+export interface Result {
   isActive: SharedValue<boolean>;
   gesture: PanGesture;
 }
@@ -24,6 +24,8 @@ export function usePanGesture({ enabled }: Config): Result {
     return Gesture.Pan()
       .runOnJS(true)
       .enabled(enabled)
+      .onTouchesDown(() => (isPanGestureActive.value = true))
+      .onTouchesUp(() => (isPanGestureActive.value = false))
       .onStart(() => {
         isPanGestureActive.value = true;
       })

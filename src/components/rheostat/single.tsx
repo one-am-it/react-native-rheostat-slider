@@ -12,7 +12,7 @@ import type { BaseRheostatProps } from './types';
 import { Dot } from '../dot';
 import { usePanGesture } from '../hooks/usePanGesture';
 import { getPosition, getValue } from './utils';
-import { DOT_DEFAULT_COLOR, DOT_DEFAULT_SIZE } from './constant';
+import { DOT_DEFAULT_COLOR, DOT_DEFAULT_RADIUS } from './constant';
 
 function SingleRheostat({
   enabled = true,
@@ -22,7 +22,7 @@ function SingleRheostat({
   onValuesUpdated,
   ...props
 }: BaseRheostatProps) {
-  const axisWidth = useMemo(() => width - DOT_DEFAULT_SIZE, [width]);
+  const axisWidth = useMemo(() => width - DOT_DEFAULT_RADIUS, [width]);
 
   const dotValuePosition = useSharedValue(
     getPosition(inputValues[0] as number, data, axisWidth)
@@ -61,7 +61,7 @@ function SingleRheostat({
       <GestureDetector gesture={gesture}>
         <Dot
           color={props.theme?.dot ?? DOT_DEFAULT_COLOR}
-          size={DOT_DEFAULT_SIZE}
+          size={DOT_DEFAULT_RADIUS}
           style={animatedStyles}
         />
       </GestureDetector>
@@ -89,7 +89,7 @@ export default SingleRheostat;
 const styles = StyleSheet.create({
   slider: {
     position: 'absolute',
-    top: DOT_DEFAULT_SIZE / 2,
+    top: DOT_DEFAULT_RADIUS / 2,
   },
   active: {
     height: 4,

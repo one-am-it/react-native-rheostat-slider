@@ -22,6 +22,10 @@ export type HandlersState = {
 };
 
 export interface RheostatProps {
+  /**
+   * @description
+   * Graph's interactivity enabled. Is possible to pan circles on the line
+   */
   enabled?: boolean;
   style?: StyleProp<ViewStyle>;
   /**
@@ -46,5 +50,13 @@ export interface RheostatProps {
       inactive?: string;
     };
   };
-  onValuesUpdated?: (state:HandlersState) => void,
+  /**
+   * Horizontal padding applied to graph, so the pan gesture dot doesn't get cut off horizontally
+   */
+  horizontalPadding?: number;
+  /**
+   * Vertical padding applied to graph, so the pan gesture dot doesn't get cut off vertically
+   */
+  verticalPadding?: number;
+  onValuesUpdated?: (state: HandlersState) => void;
 }
