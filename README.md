@@ -1,22 +1,10 @@
-# oneam-react-native-rheostat
+# react-native-rheostat-slider
 
-OneAM React Native Rheostat
+OneAM React Native Rheostat slider
 
 ## Installation
 
-```sh
-npm install oneam-react-native-rheostat
-```
-
-## Usage
-
-```js
-import { multiply } from 'oneam-react-native-rheostat';
-
-// ...
-
-const result = await multiply(3, 7);
-```
+TODO
 
 ## Contributing
 
