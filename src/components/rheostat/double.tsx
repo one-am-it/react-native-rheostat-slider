@@ -19,10 +19,8 @@ function DoubleRheostat({
   horizontalPadding = DOT_DEFAULT_RADIUS,
   ...props
 }: BaseRheostatProps) {
-  const axisWidth = useMemo(() => width - DOT_DEFAULT_RADIUS, [width]);
-
   const drawingWidth = useMemo(
-    () => width - horizontalPadding,
+    () => width - 2 * horizontalPadding,
     [horizontalPadding, width]
   );
 
@@ -30,20 +28,20 @@ function DoubleRheostat({
    * DOT 1
    */
   const dot1ValuePosition = useSharedValue(
-    getPosition(inputValues[0] as number, data, axisWidth)
+    getPosition(inputValues[0] as number, data, drawingWidth)
   );
   const dot1DataValue = useDerivedValue(() => {
-    return getValue(dot1ValuePosition.value, data, axisWidth);
+    return getValue(dot1ValuePosition.value, data, drawingWidth);
   });
 
   /**
    * DOT 2
    */
   const dot2ValuePosition = useSharedValue(
-    getPosition(inputValues[1] as number, data, axisWidth)
+    getPosition(inputValues[1] as number, data, drawingWidth)
   );
   const dot2DataValue = useDerivedValue(() => {
-    return getValue(dot2ValuePosition.value, data, axisWidth);
+    return getValue(dot2ValuePosition.value, data, drawingWidth);
   });
 
   const activeDataValues = useDerivedValue(() => {
@@ -54,11 +52,11 @@ function DoubleRheostat({
 
   const path = useMemo(() => {
     const p = Skia.Path.Make();
-    p.moveTo(horizontalPadding, height / 2);
+    p.moveTo(0, height / 2);
     p.lineTo(drawingWidth, height / 2);
 
     return p;
-  }, [drawingWidth, height, horizontalPadding]);
+  }, [drawingWidth, height]);
   const activePath = useDerivedValue(() => {
     const p = Skia.Path.Make();
     p.moveTo(dot1ValuePosition.value, height / 2);
@@ -110,14 +108,13 @@ function DoubleRheostat({
       if (isGestureActive.value === 0) {
         if (
           event.x <= Math.min(dot2ValuePosition.value - 30, drawingWidth) &&
-          event.x >= horizontalPadding
+          event.x >= 0
         ) {
           dot1ValuePosition.value = event.x;
         }
       } else if (isGestureActive.value === 1) {
         if (
-          event.x >=
-            Math.max(horizontalPadding, dot1ValuePosition.value + 30) &&
+          event.x >= Math.max(0, dot1ValuePosition.value + 30) &&
           event.x <= drawingWidth
         ) {
           dot2ValuePosition.value = event.x;

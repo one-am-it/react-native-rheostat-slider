@@ -12,14 +12,8 @@ export function getValue(pos: number, data: number[], w: number): number {
 
   const min = Math.min(...data);
   const max = Math.max(...data);
-  const decimal = pos / w;
 
-  if (pos === 0) {
-    return min;
-  }
-  if (pos === w) {
-    return max;
-  }
+  const decimal = pos / w;
 
   return Math.round((max - min) * decimal + min);
 }
