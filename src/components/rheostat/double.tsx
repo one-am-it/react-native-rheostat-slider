@@ -4,7 +4,11 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 
-import { DOT_DEFAULT_COLOR, DOT_DEFAULT_RADIUS, DOT_MAGNETIC_AREA } from './constant';
+import {
+  DOT_DEFAULT_COLOR,
+  DOT_DEFAULT_RADIUS,
+  DOT_MAGNETIC_AREA,
+} from './constant';
 import type { BaseRheostatProps } from './types';
 import { getPosition, getValue } from './utils';
 import { SkiaDot } from '../skiaDot/skiaDot';

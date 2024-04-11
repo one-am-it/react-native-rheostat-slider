@@ -14,7 +14,11 @@ export default function App() {
           double={false}
           values={[12, 22]}
           data={mockValues}
+          min={0}
+          max={28}
+          step={3}
           horizontalPadding={20}
+          unlimitedUpperBound={true}
           theme={{
             dot: '#6388f0',
             slider: { inactive: '#bec3c0', active: '#6388f0' },

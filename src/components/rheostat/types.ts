@@ -36,9 +36,27 @@ export interface RheostatProps {
   values: number[];
   /**
    * @description
-   * valori da mappare sullo slider
+   * Valori da mappare sullo slider.
+   * Se undefined, vengono definiti tra minimo e massimo separati da uno step
    */
   data: number[];
+  /**
+   * @description
+   * distanza tra numeri nella creazione dell'intervallo di dati tra minimo e massimo
+   */
+  step?: number;
+  unlimitedBottomBound?: boolean;
+  unlimitedUpperBound?: boolean;
+  /**
+   * @description
+   * valore massimo
+   */
+  min: number;
+  /**
+   * @description
+   * valore minimo
+   */
+  max: number;
   /**
    * @description
    * Personalizzazione componenti

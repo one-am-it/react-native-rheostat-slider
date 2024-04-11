@@ -5,11 +5,19 @@ import type { RheostatProps } from './types';
 import SingleRheostat from './single';
 import DoubleRheostat from './double';
 
-type RheostatImplProps = RheostatProps & {
+type RheostatImplProps = Omit<RheostatProps, 'data'> & {
   double?: boolean;
+  data?: number[];
 };
 
-function RheostatImpl({ double = false, values, ...props }: RheostatImplProps) {
+function RheostatImpl({
+  double = false,
+  step = 1,
+  ...props
+}: RheostatImplProps) {
+  const { values, max, min, unlimitedUpperBound, unlimitedBottomBound, data } =
+    props;
+
   const [layout, setLayout] = useState<{ width: number; height: number }>({
     width: 0,
     height: 0,
@@ -48,22 +56,41 @@ function RheostatImpl({ double = false, values, ...props }: RheostatImplProps) {
     }
   }, [double, values]);
 
+  const snapPoints = useMemo(() => {
+    const points =
+      data ??
+      Array.from(
+        { length: Math.floor((max - min) / step) + 1 },
+        (_, i) => min + i * step
+      );
+    return (
+      data ??
+      ([
+        unlimitedBottomBound ? min - 1 : null,
+        ...points,
+        unlimitedUpperBound ? max + 1 : null,
+      ].filter((p) => p !== null) as number[])
+    );
+  }, [data, max, min, step, unlimitedBottomBound, unlimitedUpperBound]);
+
   return (
     <View style={[{ height: '100%' }, props.style]} onLayout={onLayout}>
       {layout.width > 0 ? (
         double ? (
           <DoubleRheostat
+            {...props}
             height={layout.height}
             width={layout.width}
             values={checkedValues}
-            {...props}
+            data={snapPoints}
           />
         ) : (
           <SingleRheostat
+            {...props}
             height={layout.height}
             width={layout.width}
             values={checkedValues}
-            {...props}
+            data={snapPoints}
           />
         )
       ) : null}
