@@ -11,7 +11,7 @@ export default function App() {
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.canvas}>
         <Rheostat
-          double={true}
+          double={false}
           values={[12, 22]}
           data={mockValues}
           horizontalPadding={20}
@@ -35,6 +35,5 @@ const styles = StyleSheet.create({
   canvas: {
     width: '100%',
     height: 100,
-    padding: 15,
   },
 });

@@ -6,7 +6,11 @@ import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
 
 import type { BaseRheostatProps } from './types';
 import { getPosition, getValue } from './utils';
-import { DOT_DEFAULT_COLOR, DOT_DEFAULT_RADIUS } from './constant';
+import {
+  DOT_DEFAULT_COLOR,
+  DOT_DEFAULT_RADIUS,
+  DOT_MAGNETIC_AREA,
+} from './constant';
 import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import { SkiaDot } from '../skiaDot/skiaDot';
 
@@ -20,36 +24,37 @@ function SingleRheostat({
   horizontalPadding = DOT_DEFAULT_RADIUS,
   ...props
 }: BaseRheostatProps) {
-  const drawingWidth = useMemo(
-    () => width - 2 * horizontalPadding,
+  const startX = useMemo(() => horizontalPadding, [horizontalPadding]);
+  const endX = useMemo(
+    () => width - horizontalPadding,
     [horizontalPadding, width]
   );
+  const path = useMemo(() => {
+    const p = Skia.Path.Make();
+    p.moveTo(startX, height / 2);
+    p.lineTo(endX, height / 2);
+
+    return p;
+  }, [endX, height, startX]);
 
   const dotValuePosition = useSharedValue(
-    getPosition(inputValues[0] as number, data, drawingWidth)
+    getPosition(inputValues[0] as number, data, startX, endX)
   );
 
   const dataValue = useDerivedValue(() => {
-    return getValue(dotValuePosition.value, data, drawingWidth);
+    return getValue(dotValuePosition.value, data, startX, endX);
   });
   const activeDataValues = useDerivedValue(() => {
     return data.filter((d) => d <= dataValue.value);
   });
 
-  const path = useMemo(() => {
-    const p = Skia.Path.Make();
-    p.moveTo(0, height / 2);
-    p.lineTo(drawingWidth, height / 2);
-
-    return p;
-  }, [drawingWidth, height]);
   const activePath = useDerivedValue(() => {
     const p = Skia.Path.Make();
-    p.moveTo(0, height / 2);
+    p.moveTo(startX, height / 2);
     p.lineTo(dotValuePosition.value, height / 2);
 
     return p;
-  }, [horizontalPadding, dotValuePosition, height]);
+  }, [startX, horizontalPadding, dotValuePosition, height]);
 
   const isGestureActive = useSharedValue<number | undefined>(undefined);
   const gesture = Gesture.Pan()
@@ -61,14 +66,13 @@ function SingleRheostat({
       if (touch) {
         const distance = Math.abs(touch - dotValuePosition.value);
 
-        if (distance < 30) {
+        if (distance < DOT_MAGNETIC_AREA) {
           isGestureActive.value = 0;
         }
       }
     })
     .onTouchesUp(() => (isGestureActive.value = undefined))
     .onChange((event) => {
-      if (drawingWidth === undefined) return;
       if (isGestureActive.value === undefined) return;
 
       if (onValuesUpdated) {
@@ -80,8 +84,7 @@ function SingleRheostat({
       }
 
       if (isGestureActive.value === 0) {
-        // console.log(event);
-        if (event.x <= drawingWidth && event.x >= 0) {
+        if (event.x <= endX && event.x >= startX) {
           dotValuePosition.value = event.x;
         }
       }
@@ -93,7 +96,6 @@ function SingleRheostat({
         <Canvas
           style={{
             flex: 1,
-            backgroundColor: 'green',
           }}
         >
           <Group>

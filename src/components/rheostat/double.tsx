@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
 
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
-import { DOT_DEFAULT_COLOR, DOT_DEFAULT_RADIUS } from './constant';
+import { Canvas, Path, Skia } from '@shopify/react-native-skia';
+
+import { DOT_DEFAULT_COLOR, DOT_DEFAULT_RADIUS, DOT_MAGNETIC_AREA } from './constant';
 import type { BaseRheostatProps } from './types';
 import { getPosition, getValue } from './utils';
-import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 import { SkiaDot } from '../skiaDot/skiaDot';
 
 function DoubleRheostat({
@@ -19,29 +19,36 @@ function DoubleRheostat({
   horizontalPadding = DOT_DEFAULT_RADIUS,
   ...props
 }: BaseRheostatProps) {
-  const drawingWidth = useMemo(
-    () => width - 2 * horizontalPadding,
+  const startX = useMemo(() => horizontalPadding, [horizontalPadding]);
+  const endX = useMemo(
+    () => width - horizontalPadding,
     [horizontalPadding, width]
   );
+  const path = useMemo(() => {
+    const p = Skia.Path.Make();
+    p.moveTo(startX, height / 2);
+    p.lineTo(endX, height / 2);
 
+    return p;
+  }, [endX, height, startX]);
   /**
    * DOT 1
    */
   const dot1ValuePosition = useSharedValue(
-    getPosition(inputValues[0] as number, data, drawingWidth)
+    getPosition(inputValues[0] as number, data, startX, endX)
   );
   const dot1DataValue = useDerivedValue(() => {
-    return getValue(dot1ValuePosition.value, data, drawingWidth);
+    return getValue(dot1ValuePosition.value, data, startX, endX);
   });
 
   /**
    * DOT 2
    */
   const dot2ValuePosition = useSharedValue(
-    getPosition(inputValues[1] as number, data, drawingWidth)
+    getPosition(inputValues[1] as number, data, startX, endX)
   );
   const dot2DataValue = useDerivedValue(() => {
-    return getValue(dot2ValuePosition.value, data, drawingWidth);
+    return getValue(dot2ValuePosition.value, data, startX, endX);
   });
 
   const activeDataValues = useDerivedValue(() => {
@@ -50,13 +57,6 @@ function DoubleRheostat({
     );
   });
 
-  const path = useMemo(() => {
-    const p = Skia.Path.Make();
-    p.moveTo(0, height / 2);
-    p.lineTo(drawingWidth, height / 2);
-
-    return p;
-  }, [drawingWidth, height]);
   const activePath = useDerivedValue(() => {
     const p = Skia.Path.Make();
     p.moveTo(dot1ValuePosition.value, height / 2);
@@ -75,7 +75,7 @@ function DoubleRheostat({
         const distance1 = Math.abs(touch - dot1ValuePosition.value);
         const distance2 = Math.abs(touch - dot2ValuePosition.value);
 
-        if (distance1 < 30 && distance2 < 30) {
+        if (distance1 < DOT_MAGNETIC_AREA && distance2 < DOT_MAGNETIC_AREA) {
           if (distance1 < distance2) {
             isGestureActive.value = 0;
           } else {
@@ -84,9 +84,9 @@ function DoubleRheostat({
 
           return;
         } else {
-          if (distance1 < 30) {
+          if (distance1 < DOT_MAGNETIC_AREA) {
             isGestureActive.value = 0;
-          } else if (distance2 < 30) {
+          } else if (distance2 < DOT_MAGNETIC_AREA) {
             isGestureActive.value = 1;
           }
         }
@@ -94,7 +94,6 @@ function DoubleRheostat({
     })
     .onTouchesUp(() => (isGestureActive.value = undefined))
     .onChange((event) => {
-      if (drawingWidth === undefined) return;
       if (isGestureActive.value === undefined) return;
 
       if (onValuesUpdated) {
@@ -107,15 +106,17 @@ function DoubleRheostat({
 
       if (isGestureActive.value === 0) {
         if (
-          event.x <= Math.min(dot2ValuePosition.value - 30, drawingWidth) &&
-          event.x >= 0
+          event.x <=
+            Math.min(dot2ValuePosition.value - DOT_MAGNETIC_AREA, endX) &&
+          event.x >= startX
         ) {
           dot1ValuePosition.value = event.x;
         }
       } else if (isGestureActive.value === 1) {
         if (
-          event.x >= Math.max(0, dot1ValuePosition.value + 30) &&
-          event.x <= drawingWidth
+          event.x >=
+            Math.max(startX, dot1ValuePosition.value + DOT_MAGNETIC_AREA) &&
+          event.x <= endX
         ) {
           dot2ValuePosition.value = event.x;
         }
@@ -123,45 +124,43 @@ function DoubleRheostat({
     });
 
   return (
-    <View style={{ flex: 1 }}>
-      <GestureDetector gesture={gesture}>
-        <Canvas style={{ flex: 1 }}>
-          <Path
-            path={path}
-            strokeWidth={3}
-            color={props.theme?.slider?.inactive}
-            style="stroke"
-            strokeJoin="round"
-            strokeCap="round"
-          ></Path>
-          <Path
-            path={activePath}
-            strokeWidth={3}
-            color={props.theme?.slider?.active}
-            style="stroke"
-            strokeJoin="round"
-            strokeCap="round"
-          ></Path>
-          <SkiaDot
-            color={props.theme?.dot ?? DOT_DEFAULT_COLOR}
-            size={DOT_DEFAULT_RADIUS}
-            circleX={dot1ValuePosition}
-            active={isGestureActive}
-            circleY={height / 2}
-            index={0}
-          />
+    <GestureDetector gesture={gesture}>
+      <Canvas style={{ flex: 1 }}>
+        <Path
+          path={path}
+          strokeWidth={3}
+          color={props.theme?.slider?.inactive}
+          style="stroke"
+          strokeJoin="round"
+          strokeCap="round"
+        ></Path>
+        <Path
+          path={activePath}
+          strokeWidth={3}
+          color={props.theme?.slider?.active}
+          style="stroke"
+          strokeJoin="round"
+          strokeCap="round"
+        ></Path>
+        <SkiaDot
+          color={props.theme?.dot ?? DOT_DEFAULT_COLOR}
+          size={DOT_DEFAULT_RADIUS}
+          circleX={dot1ValuePosition}
+          active={isGestureActive}
+          circleY={height / 2}
+          index={0}
+        />
 
-          <SkiaDot
-            color={props.theme?.dot ?? DOT_DEFAULT_COLOR}
-            size={DOT_DEFAULT_RADIUS}
-            circleX={dot2ValuePosition}
-            circleY={height / 2}
-            active={isGestureActive}
-            index={1}
-          />
-        </Canvas>
-      </GestureDetector>
-    </View>
+        <SkiaDot
+          color={props.theme?.dot ?? DOT_DEFAULT_COLOR}
+          size={DOT_DEFAULT_RADIUS}
+          circleX={dot2ValuePosition}
+          circleY={height / 2}
+          active={isGestureActive}
+          index={1}
+        />
+      </Canvas>
+    </GestureDetector>
   );
 }
 

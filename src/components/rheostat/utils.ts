@@ -1,19 +1,27 @@
-export function getPosition(value: number, data: number[], w: number): number {
+export function getPosition(
+  value: number,
+  data: number[],
+  minRange: number,
+  maxRange: number
+): number {
   'worklet';
 
   const min = Math.min(...data);
   const max = Math.max(...data);
 
-  return ((value - min) / (max - min)) * w;
+  return (maxRange - minRange) * ((value - min) / (max - min)) + minRange;
 }
 
-export function getValue(pos: number, data: number[], w: number): number {
+export function getValue(
+  pos: number,
+  data: number[],
+  minRange: number,
+  maxRange: number
+): number {
   'worklet';
 
   const min = Math.min(...data);
   const max = Math.max(...data);
 
-  const decimal = pos / w;
-
-  return Math.round((max - min) * decimal + min);
+  return Math.round(((pos - minRange) / (maxRange - minRange)) * (max - min) + min);
 }

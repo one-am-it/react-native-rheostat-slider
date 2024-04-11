@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import { type LayoutChangeEvent, View } from 'react-native';
+
 import type { RheostatProps } from './types';
 import SingleRheostat from './single';
 import DoubleRheostat from './double';
-import { type LayoutChangeEvent, View } from 'react-native';
 
 type RheostatImplProps = RheostatProps & {
   double?: boolean;
