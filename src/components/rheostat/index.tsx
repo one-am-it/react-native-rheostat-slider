@@ -34,26 +34,23 @@ function RheostatImpl({
   );
 
   const checkedValues = useMemo(() => {
-    try {
-      if (double) {
-        if (values.length < 2) {
-          throw new Error('È necessario definire due valori');
-        } else if (values.length > 2) {
-          return values.slice(0, 2);
-        }
-      } else {
-        if (values.length === 0) {
-          throw new Error('È necessario definire un valore');
-        } else if (values.length > 1) {
-          return values.slice(0, 1);
-        }
+    if (double) {
+      if (values.length < 2) {
+        console.warn('È necessario definire due valori');
+        return [];
+      } else if (values.length > 2) {
+        return values.slice(0, 2);
       }
-
-      return values;
-    } catch (error) {
-      console.warn(error);
-      return [];
+    } else {
+      if (values.length === 0) {
+        console.warn('È necessario definire un valore');
+        return [];
+      } else if (values.length > 1) {
+        return values.slice(0, 1);
+      }
     }
+
+    return values;
   }, [double, values]);
 
   const snapPoints = useMemo(() => {

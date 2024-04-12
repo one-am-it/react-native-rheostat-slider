@@ -1,6 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+  Gesture,
+  GestureDetector,
+  type GestureTouchEvent,
+} from 'react-native-gesture-handler';
 import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 
@@ -10,19 +14,15 @@ import {
   DOT_MAGNETIC_AREA,
 } from './constant';
 import type { BaseRheostatProps } from './types';
-import { getPosition, getValue } from './utils';
+import { getPosition, getValue, whichIsActive } from './utils';
 import { SkiaDot } from '../skiaDot/skiaDot';
 
 function DoubleRheostat({
   enabled = true,
-  width,
-  height,
-  values: inputValues,
-  data,
-  onValuesUpdated,
   horizontalPadding = DOT_DEFAULT_RADIUS,
   ...props
 }: BaseRheostatProps) {
+  const { width, values: inputValues, height, data, onValuesUpdated } = props;
   const startX = useMemo(() => horizontalPadding, [horizontalPadding]);
   const endX = useMemo(
     () => width - horizontalPadding,
@@ -35,6 +35,7 @@ function DoubleRheostat({
 
     return p;
   }, [endX, height, startX]);
+
   /**
    * DOT 1
    */
@@ -69,36 +70,35 @@ function DoubleRheostat({
     return p;
   }, [dot1ValuePosition.value, dot2ValuePosition.value, height]);
 
-  const isGestureActive = useSharedValue<number | undefined>(undefined);
+  /**
+   * -1 = nessuna gesture riconosciuta e gestita
+   */
+  const isGestureActive = useSharedValue<number>(-1);
+  const trackTouchDown = useCallback(
+    (event: GestureTouchEvent) => {
+      const touch = event.changedTouches[0]?.x;
+
+      if (touch) {
+        isGestureActive.value = whichIsActive(
+          touch,
+          dot1ValuePosition,
+          dot2ValuePosition
+        );
+      }
+    },
+    [dot1ValuePosition, dot2ValuePosition, isGestureActive]
+  );
+  const trackTouchUp = useCallback(
+    () => (isGestureActive.value = -1),
+    [isGestureActive]
+  );
   const gesture = Gesture.Pan()
     .runOnJS(true)
     .enabled(enabled)
-    .onTouchesDown((event) => {
-      const touch = event.changedTouches[0]?.x;
-      if (touch) {
-        const distance1 = Math.abs(touch - dot1ValuePosition.value);
-        const distance2 = Math.abs(touch - dot2ValuePosition.value);
-
-        if (distance1 < DOT_MAGNETIC_AREA && distance2 < DOT_MAGNETIC_AREA) {
-          if (distance1 < distance2) {
-            isGestureActive.value = 0;
-          } else {
-            isGestureActive.value = 1;
-          }
-
-          return;
-        } else {
-          if (distance1 < DOT_MAGNETIC_AREA) {
-            isGestureActive.value = 0;
-          } else if (distance2 < DOT_MAGNETIC_AREA) {
-            isGestureActive.value = 1;
-          }
-        }
-      }
-    })
-    .onTouchesUp(() => (isGestureActive.value = undefined))
+    .onTouchesDown(trackTouchDown)
+    .onTouchesUp(trackTouchUp)
     .onChange((event) => {
-      if (isGestureActive.value === undefined) return;
+      if (isGestureActive.value === -1) return;
 
       if (onValuesUpdated) {
         onValuesUpdated({
@@ -124,6 +124,11 @@ function DoubleRheostat({
         ) {
           dot2ValuePosition.value = event.x;
         }
+      }
+    })
+    .onEnd(() => {
+      if (props.onSliderDragEnd) {
+        props.onSliderDragEnd();
       }
     });
 

@@ -11,7 +11,7 @@ export default function App() {
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.canvas}>
         <Rheostat
-          double={false}
+          double={true}
           values={[12, 22]}
           data={mockValues}
           min={0}

@@ -77,4 +77,5 @@ export interface RheostatProps {
    */
   verticalPadding?: number;
   onValuesUpdated?: (state: HandlersState) => void;
+  onSliderDragEnd?: () => void;
 }

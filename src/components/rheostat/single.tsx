@@ -1,29 +1,24 @@
-import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
 
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import {
+  Gesture,
+  GestureDetector,
+  type GestureTouchEvent,
+} from 'react-native-gesture-handler';
 import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
 
 import type { BaseRheostatProps } from './types';
-import { getPosition, getValue } from './utils';
-import {
-  DOT_DEFAULT_COLOR,
-  DOT_DEFAULT_RADIUS,
-  DOT_MAGNETIC_AREA,
-} from './constant';
+import { getPosition, getValue, whichIsActive } from './utils';
+import { DOT_DEFAULT_COLOR, DOT_DEFAULT_RADIUS } from './constant';
 import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import { SkiaDot } from '../skiaDot/skiaDot';
 
 function SingleRheostat({
   enabled = true,
-  width,
-  values: inputValues,
-  height,
-  data,
-  onValuesUpdated,
   horizontalPadding = DOT_DEFAULT_RADIUS,
   ...props
 }: BaseRheostatProps) {
+  const { width, values: inputValues, height, data, onValuesUpdated } = props;
   const startX = useMemo(() => horizontalPadding, [horizontalPadding]);
   const endX = useMemo(
     () => width - horizontalPadding,
@@ -56,22 +51,26 @@ function SingleRheostat({
     return p;
   }, [startX, horizontalPadding, dotValuePosition, height]);
 
-  const isGestureActive = useSharedValue<number | undefined>(undefined);
-  const gesture = Gesture.Pan()
-    .runOnJS(true)
-    .enabled(enabled)
-    .onTouchesDown((event) => {
+  const isGestureActive = useSharedValue<number>(-1);
+  const trackTouchDown = useCallback(
+    (event: GestureTouchEvent) => {
       const touch = event.changedTouches[0]?.x;
 
       if (touch) {
-        const distance = Math.abs(touch - dotValuePosition.value);
-
-        if (distance < DOT_MAGNETIC_AREA) {
-          isGestureActive.value = 0;
-        }
+        isGestureActive.value = whichIsActive(touch, dotValuePosition);
       }
-    })
-    .onTouchesUp(() => (isGestureActive.value = undefined))
+    },
+    [dotValuePosition, isGestureActive]
+  );
+  const trackTouchUp = useCallback(
+    () => (isGestureActive.value = -1),
+    [isGestureActive]
+  );
+  const gesture = Gesture.Pan()
+    .runOnJS(true)
+    .enabled(enabled)
+    .onTouchesDown(trackTouchDown)
+    .onTouchesUp(trackTouchUp)
     .onChange((event) => {
       if (isGestureActive.value === undefined) return;
 
@@ -91,42 +90,40 @@ function SingleRheostat({
     });
 
   return (
-    <View style={{ flex: 1 }}>
-      <GestureDetector gesture={gesture}>
-        <Canvas
-          style={{
-            flex: 1,
-          }}
-        >
-          <Group>
-            <Path
-              path={path}
-              strokeWidth={3}
-              color={props.theme?.slider?.inactive}
-              style="stroke"
-              strokeJoin="round"
-              strokeCap="round"
-            ></Path>
-            <Path
-              path={activePath}
-              strokeWidth={3}
-              color={props.theme?.slider?.active}
-              style="stroke"
-              strokeJoin="round"
-              strokeCap="round"
-            ></Path>
-          </Group>
-          <SkiaDot
-            color={props.theme?.dot ?? DOT_DEFAULT_COLOR}
-            size={DOT_DEFAULT_RADIUS}
-            circleX={dotValuePosition}
-            active={isGestureActive}
-            circleY={height / 2}
-            index={0}
-          />
-        </Canvas>
-      </GestureDetector>
-    </View>
+    <GestureDetector gesture={gesture}>
+      <Canvas
+        style={{
+          flex: 1,
+        }}
+      >
+        <Group>
+          <Path
+            path={path}
+            strokeWidth={3}
+            color={props.theme?.slider?.inactive}
+            style="stroke"
+            strokeJoin="round"
+            strokeCap="round"
+          ></Path>
+          <Path
+            path={activePath}
+            strokeWidth={3}
+            color={props.theme?.slider?.active}
+            style="stroke"
+            strokeJoin="round"
+            strokeCap="round"
+          ></Path>
+        </Group>
+        <SkiaDot
+          color={props.theme?.dot ?? DOT_DEFAULT_COLOR}
+          size={DOT_DEFAULT_RADIUS}
+          circleX={dotValuePosition}
+          active={isGestureActive}
+          circleY={height / 2}
+          index={0}
+        />
+      </Canvas>
+    </GestureDetector>
   );
 }
 
