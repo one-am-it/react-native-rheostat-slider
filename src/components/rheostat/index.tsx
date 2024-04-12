@@ -40,18 +40,18 @@ function RheostatImpl({
 
   const checkedValues = useMemo(() => {
     if (slider) {
-      if (values.length < 2) {
-        console.warn('È necessario definire due valori');
-        return [];
-      } else if (values.length > 2) {
-        return values.slice(0, 2);
-      }
-    } else {
       if (values.length === 0) {
         console.warn('È necessario definire un valore');
         return [];
       } else if (values.length > 1) {
         return values.slice(0, 1);
+      }
+    } else {
+      if (values.length < 2) {
+        console.warn('È necessario definire due valori');
+        return [];
+      } else if (values.length > 2) {
+        return values.slice(0, 2);
       }
     }
 
@@ -62,7 +62,7 @@ function RheostatImpl({
     const points =
       data ??
       Array.from(
-        { length: Math.floor((max - min) / step) + 1 },
+        { length: Math.floor((max - Math.abs(min)) / step) + 1 },
         (_, i) => min + i * step
       );
     return (
