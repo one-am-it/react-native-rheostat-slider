@@ -4,6 +4,7 @@ import { type LayoutChangeEvent, View } from 'react-native';
 import type { RheostatProps } from './types';
 import SingleRheostat from './single';
 import DoubleRheostat from './double';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 type RheostatImplProps = Omit<RheostatProps, 'data'> & {
   double?: boolean;
@@ -71,27 +72,29 @@ function RheostatImpl({
   }, [data, max, min, step, unlimitedBottomBound, unlimitedUpperBound]);
 
   return (
-    <View style={[{ height: '100%' }, props.style]} onLayout={onLayout}>
-      {layout.width > 0 ? (
-        double ? (
-          <DoubleRheostat
-            {...props}
-            height={layout.height}
-            width={layout.width}
-            values={checkedValues}
-            data={snapPoints}
-          />
-        ) : (
-          <SingleRheostat
-            {...props}
-            height={layout.height}
-            width={layout.width}
-            values={checkedValues}
-            data={snapPoints}
-          />
-        )
-      ) : null}
-    </View>
+    <GestureHandlerRootView>
+      <View style={[{ height: '100%' }, props.style]} onLayout={onLayout}>
+        {layout.width > 0 ? (
+          double ? (
+            <DoubleRheostat
+              {...props}
+              height={layout.height}
+              width={layout.width}
+              values={checkedValues}
+              data={snapPoints}
+            />
+          ) : (
+            <SingleRheostat
+              {...props}
+              height={layout.height}
+              width={layout.width}
+              values={checkedValues}
+              data={snapPoints}
+            />
+          )
+        ) : null}
+      </View>
+    </GestureHandlerRootView>
   );
 }
 

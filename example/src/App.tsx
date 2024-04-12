@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Rheostat } from '@one-am/react-native-rheostat-slider';
 
 const mockValues = Array.from<number>(new Array(28)).map((_, index) => index);
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.canvas}>
         <Rheostat
           double={true}
@@ -26,7 +24,7 @@ export default function App() {
           onValuesUpdated={(state) => console.log(state)}
         />
       </View>
-    </GestureHandlerRootView>
+    </View>
   );
 }
 
