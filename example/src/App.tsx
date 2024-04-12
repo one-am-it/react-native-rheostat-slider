@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Rheostat } from '@oneam/react-native-rheostat-slider';
+import { Rheostat } from '@one-am/react-native-rheostat-slider';
 
 const mockValues = Array.from<number>(new Array(28)).map((_, index) => index);
 

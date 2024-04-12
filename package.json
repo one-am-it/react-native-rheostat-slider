@@ -1,5 +1,5 @@
 {
-  "name": "@oneam/react-native-rheostat-slider",
+  "name": "@one-am/react-native-rheostat-slider",
   "version": "0.1.0",
   "description": "OneAM React Native Rheostat slider",
   "main": "lib/commonjs/index",
@@ -26,7 +26,7 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace @oneam/react-native-rheostat-slider-example",
+    "example": "yarn workspace @one-am/react-native-rheostat-slider-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
@@ -50,14 +50,15 @@
   },
   "homepage": "https://github.com/one-am-it/react-native-rheostat-slider#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
     "@react-native/eslint-config": "^0.73.1",
     "@release-it/conventional-changelog": "^5.0.0",
-    "@shopify/react-native-skia": "^1.0.4",
+    "@shopify/react-native-skia": "^1.2.0",
     "@types/jest": "^29.5.5",
     "@types/react": "^18.2.44",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
