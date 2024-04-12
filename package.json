@@ -1,6 +1,6 @@
 {
   "name": "@one-am/react-native-rheostat-slider",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "OneAM React Native Rheostat slider",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
