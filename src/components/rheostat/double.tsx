@@ -12,6 +12,7 @@ import {
   DOT_DEFAULT_COLOR,
   DOT_DEFAULT_RADIUS,
   DOT_MAGNETIC_AREA,
+  DOT_SIZE_INCREASE,
 } from './constant';
 import type { BaseRheostatProps } from './types';
 import { getPosition, getValue, whichIsActive } from './utils';
@@ -19,10 +20,18 @@ import { SkiaDot } from '../skiaDot/skiaDot';
 
 function DoubleRheostat({
   enabled = true,
-  horizontalPadding = DOT_DEFAULT_RADIUS,
+  horizontalPadding = DOT_DEFAULT_RADIUS + DOT_SIZE_INCREASE,
   ...props
 }: BaseRheostatProps) {
-  const { width, values: inputValues, height, data, onValuesUpdated } = props;
+  const {
+    width,
+    values: inputValues,
+    height,
+    data,
+    onValuesUpdated,
+    min,
+    max,
+  } = props;
   const startX = useMemo(() => horizontalPadding, [horizontalPadding]);
   const endX = useMemo(
     () => width - horizontalPadding,
@@ -35,25 +44,33 @@ function DoubleRheostat({
 
     return p;
   }, [endX, height, startX]);
+  const firstValue = useMemo(
+    () => ((inputValues[0] as number) < min ? min : (inputValues[0] as number)),
+    [inputValues, min]
+  );
+  const secondValue = useMemo(
+    () => ((inputValues[1] as number) < max ? max : (inputValues[1] as number)),
+    [inputValues, max]
+  );
 
   /**
    * DOT 1
    */
   const dot1ValuePosition = useSharedValue(
-    getPosition(inputValues[0] as number, data, startX, endX)
+    getPosition(firstValue, min, max, startX, endX)
   );
   const dot1DataValue = useDerivedValue(() => {
-    return getValue(dot1ValuePosition.value, data, startX, endX);
+    return getValue(dot1ValuePosition.value, min, max, startX, endX);
   });
 
   /**
    * DOT 2
    */
   const dot2ValuePosition = useSharedValue(
-    getPosition(inputValues[1] as number, data, startX, endX)
+    getPosition(secondValue, min, max, startX, endX)
   );
   const dot2DataValue = useDerivedValue(() => {
-    return getValue(dot2ValuePosition.value, data, startX, endX);
+    return getValue(dot2ValuePosition.value, min, max, startX, endX);
   });
 
   const activeDataValues = useDerivedValue(() => {
@@ -103,8 +120,8 @@ function DoubleRheostat({
       if (onValuesUpdated) {
         onValuesUpdated({
           activeValues: activeDataValues.value,
-          max: Math.max(...activeDataValues.value),
-          min: Math.min(...activeDataValues.value),
+          max: activeDataValues.value[activeDataValues.value.length - 1],
+          min: activeDataValues.value[0],
         });
       }
 

@@ -50,6 +50,5 @@ const makeStyle = (color: string) =>
       borderRadius: 500,
       zIndex: 100,
       position: 'absolute',
-      // opacity: 0
     },
   });

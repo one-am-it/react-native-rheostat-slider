@@ -7,12 +7,16 @@ import DoubleRheostat from './double';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 type RheostatImplProps = Omit<RheostatProps, 'data'> & {
-  double?: boolean;
+  /**
+   * @description
+   * Flag to enabled single slider option
+   */
+  slider?: boolean;
   data?: number[];
 };
 
 function RheostatImpl({
-  double = false,
+  slider = false,
   step = 1,
   ...props
 }: RheostatImplProps) {
@@ -35,7 +39,7 @@ function RheostatImpl({
   );
 
   const checkedValues = useMemo(() => {
-    if (double) {
+    if (slider) {
       if (values.length < 2) {
         console.warn('È necessario definire due valori');
         return [];
@@ -52,7 +56,7 @@ function RheostatImpl({
     }
 
     return values;
-  }, [double, values]);
+  }, [slider, values]);
 
   const snapPoints = useMemo(() => {
     const points =
@@ -75,8 +79,8 @@ function RheostatImpl({
     <GestureHandlerRootView>
       <View style={[{ height: '100%' }, props.style]} onLayout={onLayout}>
         {layout.width > 0 ? (
-          double ? (
-            <DoubleRheostat
+          slider ? (
+            <SingleRheostat
               {...props}
               height={layout.height}
               width={layout.width}
@@ -84,7 +88,7 @@ function RheostatImpl({
               data={snapPoints}
             />
           ) : (
-            <SingleRheostat
+            <DoubleRheostat
               {...props}
               height={layout.height}
               width={layout.width}

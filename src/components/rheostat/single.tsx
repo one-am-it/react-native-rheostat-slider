@@ -9,16 +9,24 @@ import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
 
 import type { BaseRheostatProps } from './types';
 import { getPosition, getValue, whichIsActive } from './utils';
-import { DOT_DEFAULT_COLOR, DOT_DEFAULT_RADIUS } from './constant';
+import { DOT_DEFAULT_COLOR, DOT_DEFAULT_RADIUS, DOT_SIZE_INCREASE } from './constant';
 import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import { SkiaDot } from '../skiaDot/skiaDot';
 
 function SingleRheostat({
   enabled = true,
-  horizontalPadding = DOT_DEFAULT_RADIUS,
+  horizontalPadding = DOT_DEFAULT_RADIUS + DOT_SIZE_INCREASE,
   ...props
 }: BaseRheostatProps) {
-  const { width, values: inputValues, height, data, onValuesUpdated } = props;
+  const {
+    width,
+    values: inputValues,
+    height,
+    data,
+    onValuesUpdated,
+    min,
+    max,
+  } = props;
   const startX = useMemo(() => horizontalPadding, [horizontalPadding]);
   const endX = useMemo(
     () => width - horizontalPadding,
@@ -33,11 +41,11 @@ function SingleRheostat({
   }, [endX, height, startX]);
 
   const dotValuePosition = useSharedValue(
-    getPosition(inputValues[0] as number, data, startX, endX)
+    getPosition(inputValues[0] as number, min, max, startX, endX)
   );
 
   const dataValue = useDerivedValue(() => {
-    return getValue(dotValuePosition.value, data, startX, endX);
+    return getValue(dotValuePosition.value, min, max, startX, endX);
   });
   const activeDataValues = useDerivedValue(() => {
     return data.filter((d) => d <= dataValue.value);
@@ -77,8 +85,8 @@ function SingleRheostat({
       if (onValuesUpdated) {
         onValuesUpdated({
           activeValues: activeDataValues.value,
-          max: Math.max(...activeDataValues.value),
-          min: Math.min(...activeDataValues.value),
+          max: activeDataValues.value[activeDataValues.value.length - 1],
+          min: activeDataValues.value[0],
         });
       }
 
